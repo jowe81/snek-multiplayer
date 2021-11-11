@@ -1,3 +1,12 @@
+# Modified Lighthouse Labs' Snake Server
+This is Johannes' fork of [snek](https://github.com/lighthouse-labs/snek-multiplayer) from Lighthouse Labs, which in turn is based on [snek](https://github.com/taniarascia/snek) by [Tania Rascia](https://www.taniarascia.com).
+
+I have added broadcast support for logon/logoff events, which my [snake client](https://github.com/jowe81/snake-client) takes advantage of.
+
+Original README follows below below.
+
+---
+
 # 🐍 Snek.js [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![snekjs on NPM](https://img.shields.io/npm/v/snekjs.svg?color=green&label=snekjs)](https://www.npmjs.com/package/snekjs)
 
 A terminal-based Snake implementation written in JavaScript (Node.js).
