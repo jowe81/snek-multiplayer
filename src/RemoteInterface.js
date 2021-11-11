@@ -29,6 +29,7 @@ class RemoteInterface {
     }
   }
 
+  //(JW) Let everyone know how many players are currently in the game
   broadcastPlayerCount(i, sender) {
     this.broadcast(`# of current players: ${i}`);
   }

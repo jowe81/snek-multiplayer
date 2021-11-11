@@ -141,9 +141,14 @@ class Game {
     const index = this.snakes.findIndex(s => s.client === client)
 
     //(JW) Let others know this player left
-    this.server.broadcast(`Player ${this.snakes[index].name} left`, client);
+    if (index >= 0) {
+      this.server.broadcast(`Player ${this.snakes[index].name} left`, client);
+    }
 
     if (index >= 0) this.removeSnake(this.snakes[index], index)
+
+    //(JW) Update everyone on player count
+    this.server.broadcastPlayerCount(this.snakes.length, client);
   }
 
   checkDotHits(position, snake) {
@@ -241,12 +246,20 @@ class Game {
 
     for (let [i, snake] of this.snakes.entries()) {
       if (snake.hit(width, height)) {
+
+        //(JW) Let others know this player died after crashing
+        this.server.broadcast(`${snake.name} crashed and died`, snake.client);
+
         return this.removeSnake(snake, i, 'you crashed, so you ded.')
       }
 
       if (SNAKE_COLLISIONS) {
         for (let [j, otherSnake] of this.snakes.entries()) {
           if (i !== j && snake.hitSnake(otherSnake)) {
+
+            //(JW) Let others know this player died after hitting another snake
+            this.server.broadcast(`${snake.name} hit another snake and died`, snake.client);
+
             return this.removeSnake(snake, i, 'you hit another snake, so you ded.')
           }
         }
