@@ -74,6 +74,10 @@ class Game {
     if (dir) {
       return snake.changeDirection(dir[1])
     } else if (name) {
+
+      //(JW) Let others no of name change
+      this.server.broadcast("New name: ", name[1]);
+
       return snake.changeName(name[1].trim().substring(0, MAX_PLAYER_NAME_LENGTH))
     } else if (say) {
       return snake.setMessage(say[1].trim().substring(0, MAX_PLAYER_MSG_LENGTH))

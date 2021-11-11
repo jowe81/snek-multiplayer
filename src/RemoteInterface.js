@@ -19,6 +19,15 @@ class RemoteInterface {
     this.launchServer()
   }
 
+  //(JW) Broadcast message (send to all clients except sender)
+  broadcast(message, sender) {
+    for (let client of this.clients) {
+      if (client !== sender) {
+        client.write(message);
+      }
+    }
+  }
+
   launchServer() {
     this.server = net.createServer((socket) => {
       // Important: This error handler  is different than the one below! - KV
@@ -60,6 +69,9 @@ class RemoteInterface {
     this.resetIdleTimer(client, MAX_IDLE_TIMEOUT / 2)
 
     if (this.newClientHandler) this.newClientHandler(client)
+
+    //(JW) Inform other players of new arrival
+    this.broadcast(`New client joined: ${client}`, client);
 
     client.on('data', this.handleClientData.bind(this, client))
     client.on('end', this.handleClientEnded.bind(this, client))
