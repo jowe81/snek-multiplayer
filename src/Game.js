@@ -142,7 +142,7 @@ class Game {
 
     //(JW) Let others know this player left
     if (index >= 0) {
-      this.server.broadcast(`Player ${this.snakes[index].name} left`, client);
+      this.server.broadcast(`${this.snakes[index].name} left`, client);
     }
 
     if (index >= 0) this.removeSnake(this.snakes[index], index)
