@@ -75,8 +75,8 @@ class Game {
       return snake.changeDirection(dir[1])
     } else if (name) {
 
-      //(JW) Let others no of name change
-      this.server.broadcast("New name: ", name[1]);
+      //(JW) Let others know of name change
+      this.server.broadcast(`Client ${client.remoteAddress}:${client.remotePort} is now known as ${name[1]}`, client);
 
       return snake.changeName(name[1].trim().substring(0, MAX_PLAYER_NAME_LENGTH))
     } else if (say) {
@@ -120,6 +120,10 @@ class Game {
         this.snakeMoved.bind(this)
       )
       this.snakes.push(snake)
+
+      //(JW) Update everyone on player count
+      this.server.broadcastPlayerCount(this.snakes.length, client);
+
     } else {
       try {
         client.write("No space for you, try again soon!\n", () => client.end())
@@ -135,6 +139,10 @@ class Game {
 
   playerLeft(client) {
     const index = this.snakes.findIndex(s => s.client === client)
+
+    //(JW) Let others know this player left
+    this.server.broadcast(`Player ${this.snakes[index].name} left`, client);
+
     if (index >= 0) this.removeSnake(this.snakes[index], index)
   }
 

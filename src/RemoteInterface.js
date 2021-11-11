@@ -23,9 +23,14 @@ class RemoteInterface {
   broadcast(message, sender) {
     for (let client of this.clients) {
       if (client !== sender) {
-        client.write(message);
+        //Prefix message with \n as delimiter in case buffer wasn't flushed yet (filter this out at client side)
+        client.write(`\n${message}`);
       }
     }
+  }
+
+  broadcastPlayerCount(i, sender) {
+    this.broadcast(`# of current players: ${i}`);
   }
 
   launchServer() {
@@ -71,7 +76,7 @@ class RemoteInterface {
     if (this.newClientHandler) this.newClientHandler(client)
 
     //(JW) Inform other players of new arrival
-    this.broadcast(`New client joined: ${client}`, client);
+    this.broadcast(`New client joined from (address:port): ${client.remoteAddress}:${client.remotePort}`, client);
 
     client.on('data', this.handleClientData.bind(this, client))
     client.on('end', this.handleClientEnded.bind(this, client))
